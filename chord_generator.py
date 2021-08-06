@@ -56,11 +56,12 @@ def predict_next_state(note: str):
         probabilities.append(0.25)
         probabilities.append(0.00)
 
-    return np.random.choice(possible_options, p=probabilities)
+    return np.random.choice(possible_options, p = probabilities)
 
 
-def generate_sequence(chord: str = None, length: int = 30):
+def generate_sequence(chord: str, length: int = 30):
     original_chord = chord
+    length -= 2
 
     global possible_options
     possible_options = generate_possible_options(keys.index(original_chord))
