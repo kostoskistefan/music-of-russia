@@ -5,7 +5,7 @@ track = 0
 channel = 0
 duration = 0.5
 velocity = 127
-tempo = 170
+tempo = 200
 
 midi_notes = {
     "C":    48,
