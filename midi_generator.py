@@ -26,18 +26,18 @@ midi_file = MIDIFile(1)
 midi_file.addTempo(track, note_start_time, tempo)
 
 
-def play_chord(chord: str):
+def add_chord(chord: str):
     if "m" in chord:
-        play_minor_chord(midi_notes.get(chord.split("m")[0]))
+        add_minor_chord(midi_notes.get(chord.split("m")[0]))
 
     elif "7" in chord:
-        play_seventh_chord(midi_notes.get(chord.split("7")[0]))
+        add_seventh_chord(midi_notes.get(chord.split("7")[0]))
 
     else:
-        play_major_chord(midi_notes.get(chord))
+        add_major_chord(midi_notes.get(chord))
 
 
-def play_minor_chord(root_note: int):
+def add_minor_chord(root_note: int):
     global note_start_time
 
     for i in range(2):
@@ -53,7 +53,7 @@ def play_minor_chord(root_note: int):
         note_start_time += 1
 
 
-def play_major_chord(root_note: int):
+def add_major_chord(root_note: int):
     global note_start_time
 
     for i in range(2):
@@ -69,7 +69,7 @@ def play_major_chord(root_note: int):
         note_start_time += 1
 
 
-def play_seventh_chord(root_note: int):
+def add_seventh_chord(root_note: int):
     global note_start_time
 
     for i in range(2):
