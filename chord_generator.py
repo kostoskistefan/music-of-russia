@@ -1,9 +1,8 @@
 import numpy as np
 
-# np.random.seed()
-
 keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 possible_options = []
+
 
 def generate_possible_options(key_index: int):
     options = []
@@ -11,13 +10,13 @@ def generate_possible_options(key_index: int):
 
     for i in range(len(progression_indexes)):
         current_index = (key_index + progression_indexes[i]) % 12
-
         options.append(keys[current_index])
 
     return options
 
 
 def predict_next_state(note: str):
+    global possible_options
     note_index = possible_options.index(note)
 
     probabilities = []
@@ -63,6 +62,9 @@ def predict_next_state(note: str):
 def generate_sequence(chord: str = None, length: int = 30):
     original_chord = chord
 
+    global possible_options
+    possible_options = generate_possible_options(keys.index(original_chord))
+
     chords = []
     chords.append(chord)
 
@@ -80,12 +82,3 @@ def generate_sequence(chord: str = None, length: int = 30):
             chords[chords.index(chord)] += "7"
 
     return chords
-
-
-if __name__ == "__main__":
-    song_key = input("In which key do you want me to generate your song: ")
-    key_index = keys.index(song_key)
-
-    possible_options = generate_possible_options(key_index)
-
-    print(generate_sequence(song_key))
