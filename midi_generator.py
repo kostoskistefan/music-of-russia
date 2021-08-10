@@ -1,3 +1,4 @@
+from common import midi_notes
 from midiutil import MIDIFile
 
 note_start_time = 0
@@ -7,81 +8,45 @@ duration = 0.5
 velocity = 127
 tempo = 200
 
-midi_notes = {
-    "C":    48,
-    "C#":   49,
-    "D":    50,
-    "D#":   51,
-    "E":    52,
-    "F":    53,
-    "F#":   54,
-    "G":    55,
-    "G#":   56,
-    "A":    57,
-    "A#":   58,
-    "B":    59,
-}
-
 midi_file = MIDIFile(1)
 midi_file.addTempo(track, note_start_time, tempo)
 
 
 def add_chord(chord: str):
     if "m" in chord:
-        add_minor_chord(midi_notes.get(chord.split("m")[0]))
+        generate_midi(midi_notes.get(chord.split("m")[0]), 3)
 
     elif "7" in chord:
-        add_seventh_chord(midi_notes.get(chord.split("7")[0]))
+        generate_midi(midi_notes.get(chord.split("7")[0]), 4, 10)
 
     else:
-        add_major_chord(midi_notes.get(chord))
+        generate_midi(midi_notes.get(chord), 4)
 
 
-def add_minor_chord(root_note: int):
+def add_upper_chord_part(root_note: int, second_note_index: int, fourth_note_index: int = None):
+    global note_start_time
+
+    midi_file.addNote(track, channel, root_note + second_note_index, note_start_time, duration,  velocity)
+    midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
+
+    if fourth_note_index:
+        midi_file.addNote(track, channel, root_note + fourth_note_index, note_start_time, duration,  velocity)
+
+    note_start_time += 1
+
+
+def add_chord_bass_note(root_note: int):
+    global note_start_time
+
+    midi_file.addNote(track, channel, root_note, note_start_time, duration, velocity)
+    note_start_time += 1
+
+
+def generate_midi(root_note: int, second_note_index: int, fourth_note_index: int = None):
     global note_start_time
 
     for i in range(2):
-        midi_file.addNote(track, channel, root_note, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 3, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note - 5, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 3, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        note_start_time += 1
-
-
-def add_major_chord(root_note: int):
-    global note_start_time
-
-    for i in range(2):
-        midi_file.addNote(track, channel, root_note, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 4, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note - 5, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 4, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        note_start_time += 1
-
-
-def add_seventh_chord(root_note: int):
-    global note_start_time
-
-    for i in range(2):
-        midi_file.addNote(track, channel, root_note, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 4, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 10, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note - 5, note_start_time, duration,  velocity)
-        note_start_time += 1
-        midi_file.addNote(track, channel, root_note + 4, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 7, note_start_time, duration,  velocity)
-        midi_file.addNote(track, channel, root_note + 10, note_start_time, duration,  velocity)
-        note_start_time += 1
+        add_chord_bass_note(root_note)
+        add_upper_chord_part(root_note, second_note_index, fourth_note_index)
+        add_chord_bass_note(root_note - 5)
+        add_upper_chord_part(root_note, second_note_index, fourth_note_index)

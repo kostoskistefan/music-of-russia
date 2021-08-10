@@ -1,7 +1,15 @@
 import numpy as np
+from common import keys
 
-keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 possible_options = []
+
+probability_matrix = [
+    [0.00, 0.50, 0.35, 0.10, 0.05],
+    [0.30, 0.00, 0.35, 0.20, 0.15],
+    [0.35, 0.40, 0.00, 0.10, 0.15],
+    [0.15, 0.15, 0.25, 0.00, 0.45],
+    [0.20, 0.10, 0.45, 0.25, 0.00]
+]
 
 
 def generate_possible_options(key_index: int):
@@ -17,46 +25,7 @@ def generate_possible_options(key_index: int):
 
 def predict_next_state(note: str):
     global possible_options
-    note_index = possible_options.index(note)
-
-    probabilities = []
-
-    if note_index == 0:
-        probabilities.append(0.00)
-        probabilities.append(0.50)
-        probabilities.append(0.35)
-        probabilities.append(0.10)
-        probabilities.append(0.05)
-
-    elif note_index == 1:
-        probabilities.append(0.30)
-        probabilities.append(0.00)
-        probabilities.append(0.35)
-        probabilities.append(0.20)
-        probabilities.append(0.15)
-
-    elif note_index == 2:
-        probabilities.append(0.35)
-        probabilities.append(0.40)
-        probabilities.append(0.00)
-        probabilities.append(0.10)
-        probabilities.append(0.15)
-
-    elif note_index == 3:
-        probabilities.append(0.15)
-        probabilities.append(0.15)
-        probabilities.append(0.25)
-        probabilities.append(0.00)
-        probabilities.append(0.45)
-
-    elif note_index == 4:
-        probabilities.append(0.20)
-        probabilities.append(0.10)
-        probabilities.append(0.45)
-        probabilities.append(0.25)
-        probabilities.append(0.00)
-
-    return np.random.choice(possible_options, p = probabilities)
+    return np.random.choice(possible_options, p=probability_matrix[possible_options.index(note)])
 
 
 def generate_sequence(chord: str, length: int = 30):
@@ -70,8 +39,7 @@ def generate_sequence(chord: str, length: int = 30):
     chords.append(chord)
 
     for n in range(length):
-        chords.append(predict_next_state(chord))
-        chord = chords[-1]
+        chords.append(predict_next_state(chords[-1]))
 
     chords.append(original_chord)
 

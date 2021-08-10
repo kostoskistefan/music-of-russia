@@ -1,6 +1,3 @@
 env/
 .vscode/
 __pycache__/
-*.mid
-*.wav
-chord_progression.txt
