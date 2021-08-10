@@ -2,6 +2,9 @@
 
 **Music of Russia** is a python program designed to generate a song based on a user-selected note (key) by using Markov Chains. It uses one of the most common (Russian chanson) note movements, 1-4-5 with the addition of the 3rd and 7th chord (which is most commonly used in the chorus of Russian songs).
 
+## Video Demo
+[![Music Of Russia - Chord Progression Generator Demo](http://img.youtube.com/vi/woBS3mAFblc/0.jpg)](http://www.youtube.com/watch?v=woBS3mAFblc "Music Of Russia - Chord Progression Generator")
+
 ### Note
 This script has only been tested on Arch Linux. 
 
